@@ -159,7 +159,7 @@ namespace AngryKoala.Manimator
 
             await UniTask.NextFrame();
 
-            animator.Play(stateName, 0, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f);
+            animator.Play(stateName, 0, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate)) % 1f);
         }
 
         public async void GoToFrame(string stateName, int frameCount, float duration)
@@ -172,7 +172,7 @@ namespace AngryKoala.Manimator
             animator.speed = 0f;
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
                 animator.Play(stateName, 0, normalizedTime % 1);
             }).OnComplete(() =>
@@ -194,7 +194,7 @@ namespace AngryKoala.Manimator
             animator.speed = 0f;
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
                 animator.Play(stateName, 0, normalizedTime % 1);
             }).OnComplete(() =>
