@@ -130,5 +130,36 @@ namespace AngryKoala.Manimator
                 animator.Play(stateName, 0, normalizedTime);
             });
         }
+
+        public void GoToNormalizedTime(string stateName, float normalizedTime)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+
+            animator.Play(stateName, 0);
+
+            animator.Play(stateName, 0, normalizedTime);
+        }
+
+        public void GoToNormalizedTime(string stateName, float normalizedTime, float duration)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+            float time = 0f;
+
+            DOTween.To(() => time, x => time = x, normalizedTime, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            {
+                animator.Play(stateName, 0, time);
+            });
+        }
+
+        public void GoToNormalizedTime(string stateName, float normalizedTime, float duration, Ease ease)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+            float time = 0f;
+
+            DOTween.To(() => time, x => time = x, normalizedTime, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            {
+                animator.Play(stateName, 0, time);
+            });
+        }
     }
 }
