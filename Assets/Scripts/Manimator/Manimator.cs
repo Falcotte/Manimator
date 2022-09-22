@@ -25,6 +25,18 @@ namespace AngryKoala.Manimator
             animator.speed = speed;
         }
 
+        public void SetSpeed(float speed, float duration)
+        {
+            DOTween.Kill($"ManSpeed{gameObject.GetInstanceID()}");
+            DOTween.To(() => animator.speed, x => animator.speed = x, speed, duration).SetEase(Ease.Linear).SetId($"ManSpeed{gameObject.GetInstanceID()}");
+        }
+
+        public void SetSpeed(float speed, float duration, Ease ease)
+        {
+            DOTween.Kill($"ManSpeed{gameObject.GetInstanceID()}");
+            DOTween.To(() => animator.speed, x => animator.speed = x, speed, duration).SetEase(ease).SetId($"ManSpeed{gameObject.GetInstanceID()}");
+        }
+
         public async void Play(string stateName)
         {
             DOTween.Kill($"Man{gameObject.GetInstanceID()}");
