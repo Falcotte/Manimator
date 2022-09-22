@@ -89,5 +89,46 @@ namespace AngryKoala.Manimator
                 });
             }
         }
+
+        public async void GoToFrame(string stateName, int frameCount)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+
+            animator.Play(stateName, 0);
+
+            await UniTask.NextFrame();
+
+            animator.Play(stateName, 0, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f);
+        }
+
+        public async void GoToFrame(string stateName, int frameCount, float duration)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+
+            normalizedTime = 0f;
+            animator.Play(stateName, 0);
+
+            await UniTask.NextFrame();
+
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            {
+                animator.Play(stateName, 0, normalizedTime);
+            });
+        }
+
+        public async void GoToFrame(string stateName, int frameCount, float duration, Ease ease)
+        {
+            DOTween.Kill($"Man{gameObject.GetInstanceID()}");
+
+            normalizedTime = 0f;
+            animator.Play(stateName, 0);
+
+            await UniTask.NextFrame();
+
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * 30)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            {
+                animator.Play(stateName, 0, normalizedTime);
+            });
+        }
     }
 }
