@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using AngryKoala.Manimator;
 
@@ -43,10 +41,6 @@ public class DancerDemo : MonoBehaviour
         int currentFrame = manimator.GetCurrentAnimationFrame();
         currentFrame = (currentFrame + 30);
         manimator.GoToFrame(manimator.GetCurrentAnimationClipName(), currentFrame, .5f);
-
-        //float currentTime = manimator.GetCurrentAnimationNormalizedTime();
-        //currentTime += .2f;
-        //manimator.GoToNormalizedTime(manimator.GetCurrentAnimationClipName(), currentTime, .5f);
     }
 
     public void SkipBack()
