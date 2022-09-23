@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c331a55ff5623ef4b9f242ca104fdf67
+guid: 675e8559fecd28a40a3f16f0aff979c9
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Back flip to uppercut
+    second: Breakdance Ready
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Back flip to uppercut
+      name: Breakdance Ready
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 175
+      lastFrame: 63
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
