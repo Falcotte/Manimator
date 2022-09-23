@@ -11,18 +11,26 @@ namespace AngryKoala.Manimator
         private float currentAnimatorSpeed = 1f;
         public float CurrentAnimatorSpeed => currentAnimatorSpeed;
 
-        public float GetCurrentAnimationNormalizedTime()
-        {
-            AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
-            float currentTime = animState.normalizedTime % 1;
-
-            return currentTime;
-        }
-
         public string GetCurrentAnimationClipName()
         {
             AnimatorClipInfo animClip = animator.GetCurrentAnimatorClipInfo(0)[0];
             return animClip.clip.name;
+        }
+
+        public int GetCurrentAnimationFrame()
+        {
+            AnimatorClipInfo animClip = animator.GetCurrentAnimatorClipInfo(0)[0];
+            int currentFrame = Mathf.FloorToInt(GetCurrentAnimationNormalizedTime() * animClip.clip.length * animClip.clip.frameRate);
+
+            return currentFrame;
+        }
+
+        public float GetCurrentAnimationNormalizedTime()
+        {
+            AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
+            float currentTime = animState.normalizedTime % 1 < 0 ? (animState.normalizedTime % 1) + 1 : animState.normalizedTime % 1;
+
+            return currentTime;
         }
 
         public void SetSpeed(float speed)
@@ -170,9 +178,10 @@ namespace AngryKoala.Manimator
             animator.Play(stateName, 0);
 
             animator.speed = 0f;
+            AnimatorClipInfo clipInfo = animator.GetCurrentAnimatorClipInfo(0)[0];
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
                 animator.Play(stateName, 0, normalizedTime % 1);
             }).OnComplete(() =>
@@ -192,9 +201,10 @@ namespace AngryKoala.Manimator
             animator.Play(stateName, 0);
 
             animator.speed = 0f;
+            AnimatorClipInfo clipInfo = animator.GetCurrentAnimatorClipInfo(0)[0];
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
                 animator.Play(stateName, 0, normalizedTime % 1);
             }).OnComplete(() =>
