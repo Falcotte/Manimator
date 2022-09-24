@@ -29,8 +29,21 @@ namespace AngryKoala.Manimator
         {
             AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
             float currentTime = animState.normalizedTime % 1 < 0 ? (animState.normalizedTime % 1) + 1 : animState.normalizedTime % 1;
-
             return currentTime;
+        }
+
+        public float GetCurrentAnimationLengthInFrames()
+        {
+            AnimatorClipInfo animClip = animator.GetCurrentAnimatorClipInfo(0)[0];
+
+            return animClip.clip.length * animClip.clip.frameRate;
+        }
+
+        public float GetCurrentAnimationLengthInSeconds()
+        {
+            AnimatorClipInfo animClip = animator.GetCurrentAnimatorClipInfo(0)[0];
+
+            return animClip.clip.length;
         }
 
         public void SetSpeed(float speed)
@@ -181,9 +194,9 @@ namespace AngryKoala.Manimator
             AnimatorClipInfo clipInfo = animator.GetCurrentAnimatorClipInfo(0)[0];
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)) % 1f, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)), duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
-                animator.Play(stateName, 0, normalizedTime % 1);
+                animator.Play(stateName, 0, normalizedTime < 0 ? (normalizedTime % 1) + 1 : normalizedTime % 1);
             }).OnComplete(() =>
             {
                 animator.speed = currentAnimatorSpeed;
@@ -204,14 +217,16 @@ namespace AngryKoala.Manimator
             AnimatorClipInfo clipInfo = animator.GetCurrentAnimatorClipInfo(0)[0];
             await UniTask.NextFrame();
 
-            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)) % 1f, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
+            DOTween.To(() => normalizedTime, x => normalizedTime = x, (frameCount / (clipInfo.clip.length * clipInfo.clip.frameRate)), duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
-                animator.Play(stateName, 0, normalizedTime % 1);
+                animator.Play(stateName, 0, normalizedTime < 0 ? (normalizedTime % 1) + 1 : normalizedTime % 1);
             }).OnComplete(() =>
             {
+                normalizedTime = GetCurrentAnimationNormalizedTime();
                 animator.speed = currentAnimatorSpeed;
             }).OnKill(() =>
             {
+                normalizedTime = GetCurrentAnimationNormalizedTime();
                 animator.speed = currentAnimatorSpeed;
             });
         }
@@ -222,7 +237,7 @@ namespace AngryKoala.Manimator
 
             animator.Play(stateName, 0);
 
-            animator.Play(stateName, 0, normalizedTime % 1);
+            animator.Play(stateName, 0, normalizedTime < 0 ? (normalizedTime % 1) + 1 : normalizedTime % 1);
         }
 
         public void GoToNormalizedTime(string stateName, float normalizedTime, float duration)
@@ -234,7 +249,7 @@ namespace AngryKoala.Manimator
 
             DOTween.To(() => time, x => time = x, normalizedTime, duration).SetEase(Ease.Linear).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
-                animator.Play(stateName, 0, time % 1);
+                animator.Play(stateName, 0, time < 0 ? (time % 1) + 1 : time % 1);
             }).OnComplete(() =>
             {
                 animator.speed = currentAnimatorSpeed;
@@ -253,7 +268,7 @@ namespace AngryKoala.Manimator
 
             DOTween.To(() => time, x => time = x, normalizedTime, duration).SetEase(ease).SetId($"Man{gameObject.GetInstanceID()}").OnUpdate(() =>
             {
-                animator.Play(stateName, 0, time % 1);
+                animator.Play(stateName, 0, time < 0 ? (time % 1) + 1 : time % 1);
             }).OnComplete(() =>
             {
                 animator.speed = currentAnimatorSpeed;

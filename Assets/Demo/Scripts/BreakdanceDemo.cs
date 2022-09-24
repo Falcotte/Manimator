@@ -1,7 +1,7 @@
 using UnityEngine;
 using AngryKoala.Manimator;
 
-public class DancerDemo : MonoBehaviour
+public class BreakdanceDemo : MonoBehaviour
 {
     [SerializeField] private Manimator manimator;
 
@@ -39,14 +39,14 @@ public class DancerDemo : MonoBehaviour
     public void SkipForward()
     {
         int currentFrame = manimator.GetCurrentAnimationFrame();
-        currentFrame = (currentFrame + 30);
-        manimator.GoToFrame(manimator.GetCurrentAnimationClipName(), currentFrame, .5f);
+        currentFrame = (currentFrame + 50);
+        manimator.GoToFrame(manimator.GetCurrentAnimationClipName(), currentFrame, 1.5f, DG.Tweening.Ease.OutSine);
     }
 
     public void SkipBack()
     {
         int currentFrame = manimator.GetCurrentAnimationFrame();
-        currentFrame = (currentFrame - 30);
-        manimator.GoToFrame(manimator.GetCurrentAnimationClipName(), currentFrame, .5f);
+        currentFrame = (currentFrame - 50);
+        manimator.GoToFrame(manimator.GetCurrentAnimationClipName(), currentFrame, 1.5f, DG.Tweening.Ease.OutSine);
     }
 }
