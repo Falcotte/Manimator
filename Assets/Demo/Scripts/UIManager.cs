@@ -23,13 +23,19 @@ public class UIManager : MonoBehaviour
 
     public void PlayPauseButton()
     {
-        playPauseImage.sprite = isPlaying ? playIcon : pauseIcon;
         isPlaying = !isPlaying;
+        AdjustPlayPauseButtonImage(isPlaying);
 
         DOTween.Kill(playPauseImage.transform);
         playPauseImage.transform.localScale = Vector3.one;
 
         playPauseImage.transform.DOPunchScale(Vector3.one * .2f, .3f, 1, 1);
+    }
+
+    public void AdjustPlayPauseButtonImage(bool isPlaying)
+    {
+        playPauseImage.sprite = isPlaying ? pauseIcon : playIcon;
+        this.isPlaying = isPlaying;
     }
 
     public void SkipForwardButton()
